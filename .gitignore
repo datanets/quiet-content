@@ -12,10 +12,12 @@ app/webroot/uploads/*
 app/webroot/js/jquery*
 app/webroot/css/jquery*
 app/webroot/css/smoothness*
+app/webroot/css/pretty*
 app/webroot/img/pretty*
 app/webroot/img/twitter*
 app/config/site_config.php
 app/controllers/users_controller.php
+app/views/users/forgot*
 app/webroot/img/cake*
 app/webroot/js/*
 !app/webroot/js/main.js
@@ -25,3 +27,8 @@ junk/*
 vendors/*
 *.swo
 *.swp
+*.sql
+README
+app/webroot/fav*
+*old*
+app/app_controller.php

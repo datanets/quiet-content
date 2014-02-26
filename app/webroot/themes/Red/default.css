@@ -1,0 +1,40 @@
+a {
+    color:#990000;
+}
+
+#original_link_color {
+    color:#CA021D;
+    display:none;
+}
+
+#inverse_link_color {
+    color:#3F9B00;
+    display:none;
+}
+
+#nav a {
+    color:#E30220;
+    color:#CA021D;
+}
+
+.main_category_box {
+    color:#AF02CA;
+    color:#830297;
+}
+
+.welcome_box_datestamp {
+    color:#CA021D;
+    color:#E30220;
+}
+
+#announcements_box li {
+    color:#990000;
+}
+
+#calendar_events_box li {
+    color:#990000;
+}
+
+.side_nav_highlight > * {
+    color:#830297;
+}

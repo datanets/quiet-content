@@ -1,0 +1,146 @@
+2012-11-01  summea  <>
+
+  * VERSION: Bumped version up to 0.3.2.
+
+  * users_controller.php: Fixed blank password save issue.
+
+2012-09-27  summea  <>
+
+  * VERSION: Bumped version up to 0.3.1.
+
+  * welcome.ctp: Added [read-more] functionality.
+
+  * news/view.ctp: Added [read-more] functionality.
+
+  * admin_main.css: Fixed date picker at bottom of page problem.
+
+  * main.css: Fixed 'em' issue where tag wasn't becoming italic.
+
+2012-09-12  summea  <>
+
+  * VERSION: Bumped version up to 0.3.0.
+
+  * jtwitters.js: Added cache check functionality.
+
+  * tweets_controller.php: Added caching functionality.
+
+  * rssmaker.php: Updated for validity.
+
+  * users_controller.php: Split up user preferences and change password.
+
+  * users_controller.php: Fixed change password issue.
+
+  * public_main.js: Fixed font resize issues.
+
+2012-08-16  summea  <>
+
+  * VERSION: Bumped version up to 0.2.9.
+
+  * ads: Added ads functionality.
+
+  * tweets: Added tweet gathering ability for home page.
+
+  * main.css: Fixed some font and design issues.
+
+  * web-updates.pl: Moving from old web_updates.php script to web-updates.pl.
+
+  * announcements/view.ctp: Fixed attachments "preview" issue.
+
+  * entries/view.ctp: Fixed attachments "preview" issue.
+
+  * news/view.ctp: Fixed attachments "preview" issue.
+
+  * config/bootstrap.php: Added isPicture() function.
+
+  * file_managers_controller.php: Finally added filename cleaning.
+
+  * announcements_controller.php: Fixed "details box" formatting on small screens.
+  
+  * entries_controller.php: Fixed "details box" formatting on small screens.
+  
+  * news_controller.php: Fixed "details box" formatting on small screens.
+
+2012-07-23  summea  <>
+
+  * VERSION: Bumped version up to 0.2.8.
+
+  * main.css: Fixed ordered and unordered list display for stories.
+
+  * main.css: Fixed ordered and unordered list display for attachments box..
+
+  * news_controller.php: Fixed archive year issue when only one year available.
+
+  * announcements/edit.ctp: Fixed missing trailing > for images and attachments.
+
+  * entries/edit.ctp: Fixed missing trailing > for images and attachments.
+
+  * news/edit.ctp: Fixed missing trailing > for images and attachments.
+
+  * announcements/view.ctp: Fixed missing trailing > for images and attachments.
+
+  * entries/view.ctp: Fixed missing trailing > for images and attachments.
+
+  * news/view.ctp: Fixed missing trailing > for images and attachments.
+
+2012-03-06  summea  <>
+
+  * VERSION: Bumped version up to 0.2.7.
+
+  * rssmaker.php: Fixed static RSS link issue.
+
+  * announcements_controller.php: Fixed static RSS link issue.
+
+  * emergency_alerts_controller.php: Fixed static RSS link issue.
+
+  * news_controller.php: Fixed static RSS link issue.
+
+2012-01-31  summea  <>
+
+  * VERSION: Bumped version up to 0.2.6.
+
+  * app_controller.php: Enabled custom error layout.
+
+  * error.ctp: Added error layout.
+
+  * main.css: Updated for error layout.
+
+  * error404.ctp: Added for 404 error.
+
+2012-01-17  summea  <>
+
+  * VERSION: Bumped version up to 0.2.5.
+
+  * public_main.js: Fixed menu pop-up location for menus that are on right side
+  of screen.
+
+
+
+# old stuff below
+
+0.1.4
+- added mobile site
+- added mobile redirection check (in javascript)
+- add homepage to Blogs and Email list
+
+0.1.3
+- added links for calendar events on homepage [welcome.ctp]
+- added calendar link in preferences [database]
+- added calendar link to homepage [welcome.ctp]
+- edited coreylib to fix some warnings that were being displayed with new calendar event links [coreylib.php]
+- added new "New ..." options in menu for Announcements, Entries, and News
+- added clear cache option
+
+0.1.2
+- separated version number from site_config [version.php]
+- longer login (now two hours instead of ten minutes) [conf.php]
+- fixed blankpage and link checkboxes not showing up when creating a link or blank page [views/entries/create.ctp]
+- added "view all staff" (per location) link on website header when viewing menu of Staff names and contact info [app_controller.php] [main.css] [public.ctp]
+- added root categories for News and Announcements tables
+
+0.1.1
+- updated [welcome.ctp] for IE
+- updated [public_main.js] for IE
+
+0.1
+- starting point
+

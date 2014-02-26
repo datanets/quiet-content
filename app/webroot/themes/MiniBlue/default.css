@@ -1,0 +1,51 @@
+a {
+    color:#004D99;
+    color:#003870;
+}
+
+#original_link_color {
+    color:#0281CA;
+    color:#0271B1;
+    display:none;
+}
+
+#inverse_link_color {
+    color:#d70;
+    display:none;
+}
+
+#nav a {
+    color:#0281CA;
+    color:#0271B1;
+}
+
+#nav ul li {
+    font-size:15px;
+}
+
+.main_category_box {
+    color:#3F9B00;
+    color:#00800D;
+}
+
+.welcome_box_datestamp {
+    color:#0281CA;
+    color:#0271B1;
+}
+
+.welcome_side_box ul li {
+    font-size:18px;
+    line-height:0.95em;
+}
+
+#announcements_box li {
+    color:#004D99;
+}
+
+#calendar_events_box li {
+    color:#004D99;
+}
+
+.side_nav_highlight > * {
+    color:#3F9B00;
+}

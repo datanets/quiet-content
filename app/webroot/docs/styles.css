@@ -1,0 +1,145 @@
+#page {
+  width:60%;
+  width:80%;
+  min-width:300px;
+  margin:0px auto;
+  text-align:left;
+  margin-top:100px;
+  color:#252525;
+  font-size:100%;
+}
+
+#page #table_of_contents ol ul li {
+  font-size:0.87em;
+}
+
+#page #table_of_contents ol li a:link,
+#page #table_of_contents ol li a:visited {
+  color:#252525;
+  text-decoration:none;
+}
+
+#page #table_of_contents ol li ul a:link,
+#page #table_of_contents ol li ul a:visited {
+  color:#444;
+  text-decoration:none;
+}
+
+#page #contents a:link,
+#page #contents a:visited {
+  color:#007000;
+  color:#024769;
+  text-decoration:none;
+}
+
+#page #contents a[href]:hover {
+  text-decoration:underline;
+  /*background-color:#ddffdd;*/
+}
+
+#page h1 {
+  margin:0;
+  font-family:sans-serif;
+}
+
+#page b {
+  font-size:90%;
+}
+
+#page ol {
+  font-size:150%;
+}
+
+#page ol li ul {
+  font-size:65%;
+  color:#444;
+  list-style-type:none;
+  padding-left:0px;
+  padding-bottom:10px;
+  font-family:sans-serif;
+  line-height:1.4em;
+}
+
+#page ol li ul li ul {
+  font-size:60%;
+  padding-left:20px;
+}
+
+.section_heading {
+  margin-top:4em;
+}
+
+.subsection_heading {
+  margin:0;
+  margin-top:1em;
+  padding:0;
+  font-size:82%;
+  font-size:0.7em;
+  font-family:sans-serif;
+  color:#444;
+  color:#252525;
+  font-weight:bold;
+}
+
+.section {
+  margin:0;
+  margin-bottom:2.5em;
+  padding:0;
+  font-size:0.75em;
+  font-family:serif;
+}
+
+.section ul li {
+  list-style-type:disc;
+  font-size:120%;
+  margin-left:2.6em;
+  line-height:1.5em;
+  color:#252525;
+}
+
+.notes {
+  margin-top:-10px;
+  margin-bottom:1em;
+  padding:7px;
+  background-color:#FFFFC2;
+  font-size:0.9em;
+  line-height:1.4em;
+}
+
+.question {
+  font-family:sans-serif;
+  font-weight:bold;
+  font-size:70%;
+  text-transform:uppercase;
+  color:#e00;
+  color:#C73B0B;
+  padding-left:1em;
+  border-left:10px solid #ddd;
+}
+
+.answer {
+  font-family:sans-serif;
+  /*font-style:italic;
+  font-size:84%;*/
+  font-size:80%;
+  color:#070;
+  color:#024769;
+  /*margin-bottom:20px;*/
+  padding-bottom:1em;
+  border-left:10px solid #ddd;
+}
+
+.answer ol li { 
+  font-size:70%;
+  font-size:0.7em;
+  color:#252525;
+  line-height:1.4em;
+}
+
+.answer ul li {
+  font-size:150%;
+  list-style-type:disc;
+  margin-left:2.6em;
+  line-height:1.5em;
+  color:#252525;
+}
