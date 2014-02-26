@@ -121,15 +121,18 @@ foreach($featured_entries as $featured_entry) :
 ?>
 <li>
 <?php
+    $link = ""; 
+    if ($featured_entry['Entry']['link'])
+      $link = $featured_entry['Entry']['link_address'];
+    else
+      $link = $site_base_url . 'entries/' . $featured_entry['Entry']['id'];
+
     if (isset($featured_entry['Entry']['splash_image']) && $featured_entry['Entry']['splash_image'] > '') {
-        echo '<a href="' . $site_base_url ?>entries/<?php echo $featured_entry['Entry']['id'] . '"><span class="featured_entry_splash_image_link" style="background: #999999 url(\'' . $splash_images_base_url . $featured_entry['Entry']['splash_image'] . '\') top right;"><span class="featured_entries_header"><p>' . $featured_entry['Entry']['subject'] . '</p></span></span></a>';
+        echo '<a href="' . $link . '"><span class="featured_entry_splash_image_link" style="background: #999999 url(\'' . $splash_images_base_url . $featured_entry['Entry']['splash_image'] . '\') top right;"><span class="featured_entries_header"><p>' . $featured_entry['Entry']['subject'] . '</p></span></span></a>';
     } else {
-        echo '<a href="' . $site_base_url ?>entries/<?php echo $featured_entry['Entry']['id'] . '"><span class="featured_entry_splash_image_link" style="background: #999999 url(\'' . $site_base_url . 'img/grey_block.png' . '\') top right;"><span class="featured_entries_header"><p>' . $featured_entry['Entry']['subject'] . '</p></span></span></a>';
+        echo '<a href="' . $link . '"><span class="featured_entry_splash_image_link" style="background: #999999 url(\'' . $site_base_url . 'img/grey_block.png' . '\') top right;"><span class="featured_entries_header"><p>' . $featured_entry['Entry']['subject'] . '</p></span></span></a>';
     }
 ?>
-<!--
-<div class="featured_entries_header"><p><a href="<?php echo $site_base_url ?>entries/<?php echo $featured_entry['Entry']['id'] ?>"><?php echo $featured_entry['Entry']['subject'] ?></a></p></div>
--->
 </li>
 <?php
 

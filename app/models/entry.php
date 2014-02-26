@@ -82,7 +82,7 @@ class Entry extends AppModel {
         return $this->find('all', array('conditions' => array('featured_entry' => '1', 'status_id' => '1'),
                                         'order' => 'Entry.id DESC',
                                         'limit' => $limit,
-                                        'fields' => 'id, subject, splash_image',
+                                        'fields' => 'id, subject, splash_image, link, link_address',
                                         'recursive' => '0'));
     }
 
