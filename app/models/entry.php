@@ -80,9 +80,9 @@ class Entry extends AppModel {
 
     function list_featured_entries($limit) {
         return $this->find('all', array('conditions' => array('featured_entry' => '1', 'status_id' => '1'),
-                                        'order' => 'Entry.id DESC',
+                                        'order' => 'Entry.modified DESC',
                                         'limit' => $limit,
-                                        'fields' => 'id, subject, splash_image, link, link_address',
+                                        'fields' => 'id, subject, splash_image, link, link_address, modified',
                                         'recursive' => '0'));
     }
 

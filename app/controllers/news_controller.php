@@ -287,8 +287,8 @@ class NewsController extends AppController {
 
 
                 // clear featured news setting for all previous articles if this currently-being-saved news is featured
-                if (isset($this->data['News']['featured_news']) && $this->data['News']['featured_news'])
-                    $this->News->query("update news set featured_news='0'");
+                //if (isset($this->data['News']['featured_news']) && $this->data['News']['featured_news'])
+                //    $this->News->query("update news set featured_news='0'");
 
 
                 if ($this->News->saveAll($this->data)) {

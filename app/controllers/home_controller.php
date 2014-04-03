@@ -27,7 +27,7 @@ class HomeController extends AppController {
         $this->set('title_for_layout', $website_preferences['Preference']['website_name']);
         $this->set('splash_images_base_url', Configure::read('splash_images_base_url'));
 
-        $this->set('splash_news', $this->News->list_featured_news(1));
+        $this->set('splash_news', $this->News->list_featured_news(10));
         $this->set('announcements', $this->Announcement->list_featured_announcements($website_preferences['Preference']['featured_announcements_limit']));
 
         App::import('Vendor', 'Coreylib', array('file' => 'coreylib'.DS.'coreylib.php'));
@@ -50,7 +50,24 @@ class HomeController extends AppController {
         $this->set('calendar_events', $api);
         //$this->set('calendar_events', $this->Entry->list_recent_calendar_events(10));
 
-        $this->set('featured_entries', $this->Entry->list_featured_entries(12));
+        $this->set('current_ads', $this->Ad->get_featured_ads());
+
+        $featured_entries = $this->Entry->list_featured_entries(12);
+        $featured_on_homepage_features_section = $this->News->list_featured_on_homepage_features_section(12);
+        $combined_features = array_merge($featured_entries, $featured_on_homepage_features_section);
+
+        $modified = array();
+        foreach ($combined_features as $key => $row) {
+            if (isset($row['Entry']))
+                $modified[$key] = $row['Entry']['modified'];
+            else
+                $modified[$key] = $row['News']['modified'];
+        }
+
+        // sort by date modified
+        array_multisort($modified, SORT_DESC, $combined_features);
+
+        $this->set('featured_entries', $combined_features);
 
     }
 

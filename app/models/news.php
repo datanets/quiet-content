@@ -58,6 +58,14 @@ class News extends AppModel {
         return $this->find('all', array('conditions' => 'news_type = 1', 'order' => 'News.id DESC', 'limit' => $limit));
     }
 
+    function list_featured_on_homepage_features_section($limit) {
+        return $this->find('all', array('conditions' => array('featured_on_homepage_features_section' => '1', 'status_id' => '1'),
+                                        'order' => 'News.modified DESC',
+                                        'limit' => $limit,
+                                        'fields' => 'id, subject, splash_image, modified',
+                                        'recursive' => '0'));
+    }
+
     function resize_image($filename, $width, $height) {
 
         list ($width_orig, $height_orig, $file_type) = getimagesize($filename);

@@ -7,6 +7,7 @@ app/[Cc]onfig/database.php
 !empty
 app/Vendor/*
 app/vendors/*
+app/webroot/bootstrap/*
 app/webroot/syndicate/*
 app/webroot/uploads/*
 app/webroot/js/jquery*
@@ -32,3 +33,5 @@ README
 app/webroot/fav*
 *old*
 app/app_controller.php
+app/webroot/img/subtle-pattern-1.jpg
+app/webroot/img/readme.txt

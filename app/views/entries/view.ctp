@@ -36,7 +36,7 @@
                             else
                                 $link_text = $list_entry['subject'];
                     
-                            echo '<li id="side_nav_' . $list_entry['id'] . '" class="side_nav_item"><span class="extra_small_icon">&#10064;</span><a href="' . $list_entry['link_address'] . '" target="_blank">' . $link_text . '</a></li>';
+                            echo '<li id="side_nav_' . $list_entry['id'] . '" class="side_nav_item"><span class="glyphicon glyphicon-link"></span>&nbsp;<a href="' . $list_entry['link_address'] . '" target="_blank">' . $link_text . '</a></li>';
 
                         } else {
                             echo '<li id="side_nav_' . $list_entry['id'] . '" class="side_nav_item"><a href="' . $site_base_url . 'entries/' . $list_entry['id'] . '">' . $subject . '</a></li>';
@@ -74,168 +74,175 @@
 
 <div id="single_page">
 
+<div class="row">
+
+<!-- panel -->
 <?php if ($entry['Entry']['blank_page']) : ?>
-
     <!-- This is a blank page... //-->
-
+    <div class="col-xs-12">
 <?php else : ?>
+    <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 col-sm-push-3 col-md-push-3 col-lg-push-3">
+<?php endif; ?>
+        <div id="page_entry">
+            <div class="actions">
+                <ul>
+                    <li><b>Actions:</b></li>
+                    <li><a href="<?php echo $site_base_url ?>home/indoors">Admin Home</a> </li>
+                    <li><a href="<?php echo $site_base_url ?>entries/create">New Entry</a> </li>
+                    <li><a href="<?php echo $site_base_url ?>entries/edit/<?php echo $entry['Entry']['id'] ?>">Edit Entry</a> </li>
+                    <li><a href="<?php echo $site_base_url ?>entries/remove/<?php echo $entry['Entry']['id'] ?>" onclick="return confirm(&#039;Are you sure you want to delete this entry?&#039;);">Delete Entry</a> </li>
+                    <li><a href="<?php echo $site_base_url ?>users/logout">Logout</a> </li>
+                </ul>
+            </div>
 
-<div id="side_nav">
-
-<?php for ($i=0; $i<count($categories); $i++) : ?>
-    <ul>
-    <li id="side_nav_<?php echo $categories[$i]['EntryCategory']['id'] ?>"><a href="#<?php echo preg_replace("/[^\w]+/", "_", $categories[$i]['EntryCategory']['name']) ?>" class="category_link"><?php echo $categories[$i]['EntryCategory']['name'] ?></a>
-    <?php
-
-         if (count($categories[$i]['Entry'] > 0)) {
-
-    ?>
+            <h2><?php echo $entry['Entry']['subject']; ?></h2>
+            <div id="story_date_box">
             <ul>
             <?php
 
-            foreach($categories[$i]['Entry'] as $list_entry) :
+            $date_created = strtotime($entry['Entry']['created']);
+            $date_modified = strtotime($entry['Entry']['modified']);
 
-                $subject = $list_entry['subject'];
-                if ($subject == '')
-                    $subject = 'Untitled Entry';
+            echo '<li>Published: ' . date("F d, Y", $date_created) . ' by ';
+            if ($entry['Entry']['author_created'] > '')
+                echo '<a href="mailto:' . $users[$entry['Entry']['author_created']]['email'] . '">' . $users[$entry['Entry']['author_created']]['first_name'] . '</a>';
+            else
+                echo 'Anonymous';
+            echo '</li>';
+            echo '<li>Updated: ' . date("F d, Y", $date_modified) . ' by ';
+            if ($entry['Entry']['author_modified'] > '')
+                echo '<a href="mailto:' . $users[$entry['Entry']['author_modified']]['email'] . '">' . $users[$entry['Entry']['author_modified']]['first_name'] . '</a>';
+            else
+                echo 'Anonymous';
+            echo '</li>';
 
+            ?>
+            </ul>
+            </div>
+            <?php if (isset($entry['Entry']['splash_image']) && $entry['Entry']['splash_image']) : ?>
+            <div id="single_page_splash_image">
+            <a href="<?php echo $splash_images_base_url . $entry['Entry']['splash_image'] ?>" rel="prettyPhoto[images]"><img src="<?php echo $splash_images_base_url . $entry['Entry']['splash_image']; ?>" class="img-rounded" /></a>
+            </div>
+            <?php endif; ?>
+            <p><?php echo $entry['Entry']['entry']; ?></p>
 
-                // check if this is an external link...
-                if ($list_entry['link']) {
+            <br style="clear:both;" />
+            <?php
+                if (isset($entry['EntryImage']) && count($entry['EntryImage']) > 0) :
+            ?>
+            <div id="view_image_box">
+            <a name="images"></a>
+            <h3>Images</h3>
+            <?php
 
-                    $link_text = '';
-                    if ($list_entry['link_text'] > '')
-                        $link_text = $list_entry['link_text'];
-                    else
-                        $link_text = $list_entry['subject'];
+                foreach($entry['EntryImage'] as $image) {
 
-                    echo '<li id="side_nav_' . $list_entry['id'] . '" class="side_nav_item"><span class="extra_small_icon">&#10064;</span><a href="' . $list_entry['link_address'] . '" target="_blank">' . $link_text . '</a></li>';
-
-                } else {
-
-                    echo '<li id="side_nav_' . $list_entry['id'] . '" class="side_nav_item"><a href="' . $site_base_url . 'entries/' . $list_entry['id'] . '">' . $subject . '</a></li>';
+                    echo '<a href="' . $entry_images_base_url . $image['name'] . '" rel="prettyPhoto[images]"><img src="' . $entry_images_base_url . $image['name'] . '" /></a>';
 
                 }
 
-            endforeach;
-
-            
             ?>
-            </ul>
-    <?php
+            </div>
+            <?php
+                endif;
 
-        }
+                if (isset($entry['EntryAttachment']) && count($entry['EntryAttachment']) > 0) :
+            ?>
+            <div id="view_attachment_box">
+            <a name="attachments"></a>
+            <h3>Attachments</h3>
+            <?php
 
-    ?>
-    <?php list_children($categories[$i], $site_base_url); ?>
-    </li>
-    </ul>
-<?php endfor; ?>
+                echo '<ul>';
+                foreach($entry['EntryAttachment'] as $attachment) {
 
-</div>
-<div id="page_entry">
+                    echo '<li>';
+                    echo '<span style="float:right;">';
+                    if (isPicture($entry_attachments_base_url . $attachment['name']))
+                        echo '<span class="glyphicon glyphicon-zoom-in"></span>&nbsp;<a href="' . $entry_attachments_base_url . $attachment['name'] . '" rel="prettyPhoto[entry_a]">Preview</a>&nbsp;&nbsp;&nbsp;';
+                    echo '<span class="glyphicon glyphicon-download"></span>&nbsp;<a href="' . $entry_attachments_base_url . $attachment['name'] . '">Download</a>';
+                    echo '</span>';
+                    if (isPicture($entry_attachments_base_url . $attachment['name'])) 
+                        echo '<span class="glyphicon glyphicon-file"></span>&nbsp;<a href="' . $entry_attachments_base_url . $attachment['name'] . '" rel="prettyPhoto[entry_c]" />' . $attachment['name'] . '</a>';
+                    else
+                        echo '<span class="glyphicon glyphicon-file"></span>&nbsp;' . $attachment['name'];
+                    echo '</li>';
+
+                }
+                echo '</ul>';
+            ?>
+            </div>
+            <?php
+
+                endif;
+
+            ?>
+
+        </div>
+    </div>
+
+<?php if ($entry['Entry']['blank_page']) : ?>
+    <!-- This is a blank page... //-->
+<?php else : ?>
+    <!-- sidebar -->
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 col-sm-pull-9 col-md-pull-9 col-lg-pull-9">
+        <div id="side_nav">
+            <?php for ($i=0; $i<count($categories); $i++) : ?>
+                <ul>
+                <li id="side_nav_<?php echo $categories[$i]['EntryCategory']['id'] ?>"><a href="#<?php echo preg_replace("/[^\w]+/", "_", $categories[$i]['EntryCategory']['name']) ?>" class="category_link"><?php echo $categories[$i]['EntryCategory']['name'] ?></a>
+                <?php
+
+                     if (count($categories[$i]['Entry'] > 0)) {
+
+                ?>
+                        <ul>
+                        <?php
+
+                        foreach($categories[$i]['Entry'] as $list_entry) :
+
+                            $subject = $list_entry['subject'];
+                            if ($subject == '')
+                                $subject = 'Untitled Entry';
+
+
+                            // check if this is an external link...
+                            if ($list_entry['link']) {
+
+                                $link_text = '';
+                                if ($list_entry['link_text'] > '')
+                                    $link_text = $list_entry['link_text'];
+                                else
+                                    $link_text = $list_entry['subject'];
+
+                                echo '<li id="side_nav_' . $list_entry['id'] . '" class="side_nav_item"><span class="glyphicon glyphicon-link"></span>&nbsp;<a href="' . $list_entry['link_address'] . '" target="_blank">' . $link_text . '</a></li>';
+
+                            } else {
+
+                                echo '<li id="side_nav_' . $list_entry['id'] . '" class="side_nav_item"><a href="' . $site_base_url . 'entries/' . $list_entry['id'] . '">' . $subject . '</a></li>';
+
+                            }
+
+                        endforeach;
+
+                        
+                        ?>
+                        </ul>
+                <?php
+
+                    }
+
+                ?>
+                <?php list_children($categories[$i], $site_base_url); ?>
+                </li>
+                </ul>
+            <?php endfor; ?>
+        </div>
+    </div> <!-- end of sidebar -->
 <?php
     endif;  // check for blank page
 ?>
 
-<div class="actions">
-	<ul>
-        <li><b>Actions:</b></li>
-        <li><a href="<?php echo $site_base_url ?>home/indoors">Admin Home</a> </li>
-        <li><a href="<?php echo $site_base_url ?>entries/create">New Entry</a> </li>
-        <li><a href="<?php echo $site_base_url ?>entries/edit/<?php echo $entry['Entry']['id'] ?>">Edit Entry</a> </li>
-        <li><a href="<?php echo $site_base_url ?>entries/remove/<?php echo $entry['Entry']['id'] ?>" onclick="return confirm(&#039;Are you sure you want to delete this entry?&#039;);">Delete Entry</a> </li>
-        <li><a href="<?php echo $site_base_url ?>users/logout">Logout</a> </li>
-	</ul>
-</div>
-
-
-<h2><?php echo $entry['Entry']['subject']; ?></h2>
-<div id="story_date_box">
-<ul>
-<?php
-
-$date_created = strtotime($entry['Entry']['created']);
-$date_modified = strtotime($entry['Entry']['modified']);
-
-echo '<li>Published: ' . date("F d, Y", $date_created) . ' by ';
-if ($entry['Entry']['author_created'] > '')
-    echo '<a href="mailto:' . $users[$entry['Entry']['author_created']]['email'] . '">' . $users[$entry['Entry']['author_created']]['first_name'] . '</a>';
-else
-    echo 'Anonymous';
-echo '</li>';
-echo '<li>Updated: ' . date("F d, Y", $date_modified) . ' by ';
-if ($entry['Entry']['author_modified'] > '')
-    echo '<a href="mailto:' . $users[$entry['Entry']['author_modified']]['email'] . '">' . $users[$entry['Entry']['author_modified']]['first_name'] . '</a>';
-else
-    echo 'Anonymous';
-echo '</li>';
-
-?>
-</ul>
-</div>
-<?php if (isset($entry['Entry']['splash_image']) && $entry['Entry']['splash_image']) : ?>
-<div id="single_page_splash_image">
-<a href="<?php echo $splash_images_base_url . $entry['Entry']['splash_image'] ?>" rel="prettyPhoto[images]"><img src="<?php echo $splash_images_base_url . $entry['Entry']['splash_image']; ?>" /></a>
-</div>
-<?php endif; ?>
-<?php echo $entry['Entry']['entry']; ?>
-
-<br style="clear:both;" />
-<?php
-    if (isset($entry['EntryImage']) && count($entry['EntryImage']) > 0) :
-?>
-<div id="view_image_box">
-<a name="images"></a>
-<h3>Images</h3>
-<?php
-
-    foreach($entry['EntryImage'] as $image) {
-
-        echo '<a href="' . $entry_images_base_url . $image['name'] . '" rel="prettyPhoto[images]"><img src="' . $entry_images_base_url . $image['name'] . '" /></a>';
-
-    }
-
-?>
-</div>
-<?php
-    endif;
-
-    if (isset($entry['EntryAttachment']) && count($entry['EntryAttachment']) > 0) :
-?>
-<div id="view_attachment_box">
-<a name="attachments"></a>
-<h3>Attachments</h3>
-<?php
-
-    echo '<ul>';
-    foreach($entry['EntryAttachment'] as $attachment) {
-
-        echo '<li>';
-        echo '<span style="float:right;font-size:x-small;">';
-        if (isPicture($entry_attachments_base_url . $attachment['name']))
-            echo '&#9906;&nbsp;<a href="' . $entry_attachments_base_url . $attachment['name'] . '" rel="prettyPhoto[entry_a]">Preview</a>&nbsp;&nbsp;&nbsp;';
-        echo '&#11015;&nbsp;<a href="' . $entry_attachments_base_url . $attachment['name'] . '">Download</a>';
-        echo '</span>';
-        if (isPicture($entry_attachments_base_url . $attachment['name'])) 
-            echo '<a href="' . $entry_attachments_base_url . $attachment['name'] . '" rel="prettyPhoto[entry_b]" /><img src="' . $site_base_url . 'img/file_16.gif" /></a><a href="' . $entry_attachments_base_url . $attachment['name'] . '" rel="prettyPhoto[entry_c]" />' . $attachment['name'] . '</a>';
-        else
-            echo '<img src="' . $site_base_url . 'img/file_16.gif" />' . $attachment['name'];
-        echo '</li>';
-
-    }
-    echo '</ul>';
-
-?>
-</div>
-<?php
-    endif;
-?>
-
-</div>
-
-
-</div>
+</div> <!-- end of row -->
 
 <?php
 echo '<input type="hidden" id="current_id" value="' . $current_id . '" />';

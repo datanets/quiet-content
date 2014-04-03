@@ -96,11 +96,9 @@ class Ad extends AppModel {
 
     }
 
-    function get_featured_ad() {
-        return $this->find('first', array('conditions' => array('Ad.status_id' => '1', 'Ad.featured_ad' => '1'), 'order' => 'Ad.modified DESC'));
+    function get_featured_ads() {
+        return $this->find('all', array('conditions' => array('Ad.status_id' => '1', 'Ad.featured_ad' => '1'), 'order' => 'Ad.modified DESC'));
     }
-
-
 
 }
 

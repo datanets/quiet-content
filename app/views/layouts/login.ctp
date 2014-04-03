@@ -4,6 +4,7 @@
 <head>
 <title><?php echo $title_for_layout?></title>
 <link type="text/css" rel="stylesheet" href="<?php echo $site_base_url; ?>css/smoothness/jquery-ui-1.8.2.custom.css" />
+<link type="text/css" rel="stylesheet" href="<?php echo $site_base_url; ?>css/old_main.css" />
 <link type="text/css" rel="stylesheet" href="<?php echo $site_base_url; ?>css/main.css" />
 <link type="text/css" rel="stylesheet" href="<?php echo $site_base_url; ?>css/admin_main.css" />
 <link type="text/css" rel="stylesheet" href="<?php echo $site_base_url; ?>css/droppy.css" />

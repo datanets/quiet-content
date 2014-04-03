@@ -69,6 +69,8 @@
     echo '<div class="list_field_checkbox">' . $form->checkbox('News.featured_news') . 'Featured on Homepage</div></li>';
     echo '<li><div class="list_label">&nbsp;</div>';
     echo '<div class="list_field_checkbox">' . $form->checkbox('News.cat_featured_news') . 'Featured on Category Page</div></li>';
+    echo '<li><div class="list_label">&nbsp;</div>';
+    echo '<div class="list_field_checkbox">' . $form->checkbox('News.featured_on_homepage_features_section') . 'Featured on Homepage "Features" Section</div></li>';
     echo '<div style="display:none;">';
     echo $form->input('existing_splash_image', array('value' => $this->data['News']['splash_image']));
     echo $form->input('author_created', array('value' => $user['id']));
