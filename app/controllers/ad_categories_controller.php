@@ -1,70 +1,57 @@
 <?php
-
 App::import('Sanitize');
 
-class AdCategoriesController extends AppController {
-
-	var $name = 'AdCategories';
+class AdCategoriesController extends AppController
+{
+    var $name = 'AdCategories';
     var $layout = 'admin';
     var $helpers = array('Cache');
     var $cacheAction = array(
         'view' => '1 day'
     );
 
-
-    function beforeFilter() {
+    function beforeFilter()
+    {
         $this->disableCache();
         parent::beforeFilter();
     }
 
-    function index() {
-
+    function index()
+    {
         // Check Permissions
         $user = $this->Session->read('Auth.User');
 
         if ($user['usertype'] <= 2) {
-
             $this->set('categories', $this->AdCategory->find('threaded', array('order' => 'lft')));
-
         } else {
-
             $this->Session->setFlash('Sorry, permission denied.');
             $this->redirect('/home/indoors');
-
         }
-
-
     }
 
-    function get_updated_categories() {
-
+    function get_updated_categories()
+    {
         $this->layout = 'ajax';
 
         // Check Permissions
         $user = $this->Session->read('Auth.User');
 
         if ($user['usertype'] <= 2) {
-
             $this->set('categories', $this->AdCategory->find('threaded', array('order' => 'lft')));
-
         } else {
-
             $this->Session->setFlash('Sorry, permission denied.');
             $this->redirect('/home/indoors');
-
         }
-
     }
 
-    function create() {
-
+    function create()
+    {
         $this->autoRender = false;
 
         // Check Permissions
         $user = $this->Session->read('Auth.User');
 
         if ($user['usertype'] <= 2) {
-   
             $category_root = $this->AdCategory->find('first', array('conditions' => array('parent_id' => null)));
             $parent_id = $category_root['AdCategory']['id'];
 
@@ -73,30 +60,20 @@ class AdCategoriesController extends AppController {
             $new_item['AdCategory']['name'] = 'Untitled Category';
 
             $this->AdCategory->save($new_item);
-
         } else {
-
             $this->Session->setFlash('Sorry, permission denied.');
             $this->redirect('/home/indoors');
-
         }
-
-
     }
 
-    function update() {
-    
+    function update()
+    {
         $this->autoRender = false;
 
         // Check Permissions
         $user = $this->Session->read('Auth.User');
 
         if ($user['usertype'] <= 2) {
-
-            #echo 'updating...' . '<br>';
-            #debug($_GET, true);
-            #exit;
-
             $id = Sanitize::clean($_GET['id']);
             $new_parent_id = Sanitize::clean($_GET['new_parent_id']);
             $move_up_total = Sanitize::clean($_GET['move_up_total']);
@@ -106,7 +83,6 @@ class AdCategoriesController extends AppController {
             $new_parent_id = str_replace('item_', '', $new_parent_id);
             $move_up_total = intval($move_up_total);
             $total_li = intval($total_li);
-
 
             if ($id && $new_parent_id) {
                 $this->AdCategory->id = $id;
@@ -118,38 +94,41 @@ class AdCategoriesController extends AppController {
                 #else
                 #    $this->AdCategory->moveDown($id, $total_li);     # move to the bottom of the list if needed
             }
-
         } else {
-
             $this->Session->setFlash('Sorry, permission denied.');
             $this->redirect('/home/indoors');
-
         }
-
     }
 
-    function edit($id = null) {
-
+    function edit($id = null)
+    {
         // Check Permissions
         $user = $this->Session->read('Auth.User');
 
         if ($user['usertype'] <= 2) {
-
-
             $id = Sanitize::clean($id);
             $this->AdCategory->id = $id;
 
             if (empty($this->data)) {
-
                 $this->data = $this->AdCategory->find('first',
-                                                    array(  'contain' => array( 'AdCategoryMenuItem' => array('order' => 'weight'),
-                                                                                'AdCategoryWidget'),
-                                                            'conditions' => array('AdCategory.id' => $id)));
+                    array(
+                        'contain' => array(
+                            'AdCategoryMenuItem' => array('order' => 'weight'),
+                            'AdCategoryWidget'
+                        ),
+                        'conditions' => array('AdCategory.id' => $id)
+                    )
+                );
 
-                $category_ad_list = $this->AdCategory->find(  'all', array('contain' => array('Ad.id', 'Ad.subject'),
-                                                                    'conditions' => array('lft >=' => $this->data['AdCategory']['lft'],
-                                                                                           'rght <=' => $this->data['AdCategory']['rght']),
-                                                                    ));
+                $category_ad_list = $this->AdCategory->find('all',
+                    array(
+                        'contain' => array('Ad.id', 'Ad.subject'),
+                        'conditions' => array(
+                            'lft >=' => $this->data['AdCategory']['lft'],
+                            'rght <=' => $this->data['AdCategory']['rght']
+                        ),
+                    )
+                );
 
                 $category_ad_list_array = array();
 
@@ -207,63 +186,40 @@ class AdCategoriesController extends AppController {
 
                 $this->set('dummy_item_add_label', $dummy_item_add_label);
                 $this->set('dummy_item_add_link', $dummy_item_add_link);
-
-
-
-                #echo '<br><br><br><br><br><br><pre>' . print_r($this->data, true) . '</pre>';
-                #debug($category_ad_list, true);
-                #debug($category_ad_list_array, true);
-
             } else {
-
                 // check for category menu items to delete
-
                 $delete_these_labels = split(',', $_POST['delete_these_labels']);
                 $delete_these_links = split(',', $_POST['delete_these_links']);
 
                 foreach ($delete_these_labels as $item) {
-
                     $item_id = Sanitize::escape($item);
                     $this->AdCategory->AdCategoryMenuItem->delete($item_id);
-
                 }
 
                 foreach ($delete_these_links as $item) {
-
                     $item_id = Sanitize::escape($item);
                     $this->AdCategory->AdCategoryMenuItem->delete($item_id);
-
                 }
-
 
                 if ($this->AdCategory->saveAll($this->data)) {
-
                     $this->Session->setFlash('Your category has been updated.');
                     $this->redirect(array('action' => 'index'));
-
                 }
-
             }
-
         } else {
-
             $this->Session->setFlash('Sorry, permission denied.');
             $this->redirect('/home/indoors');
-
         }
-
     }
 
-    function rename() {
-
+    function rename()
+    {
         $this->autoRender = false;
-
 
         // Check Permissions
         $user = $this->Session->read('Auth.User');
 
         if ($user['usertype'] <= 2) {
-
             $id = Sanitize::clean($_GET['id']);
             $new_name = Sanitize::clean($_GET['new_name']);
 
@@ -273,72 +229,59 @@ class AdCategoriesController extends AppController {
                 $this->AdCategory->id = $id;
                 $this->AdCategory->save(array('name' => $new_name));
             }
-
         } else {
-
             $this->Session->setFlash('Sorry, permission denied.');
             $this->redirect('/home/indoors');
-
         }
-
     }
 
-    function delete($id = null) {
-
+    function delete($id = null)
+    {
         $this->autoRender = false;
 
         // Check Permissions
         $user = $this->Session->read('Auth.User');
 
         if ($user['usertype'] <= 2) {
-
             $id = Sanitize::clean($id);
-
             if ($this->AdCategory->delete($id)) {
-
                 $this->AdCategory->reorder();
-
                 $this->Session->setFlash('Your category has been deleted.');
                 $this->redirect(array('action' => 'index'));
-
             } else {
-
                 $this->Session->setFlash('Sorry, the category could not be deleted.');
                 $this->redirect(array('action' => 'index'));
-
             }
-
         } else {
-
             $this->Session->setFlash('Sorry, permission denied.');
             $this->redirect('/home/indoors');
-
         }
-
     }
 
-    function view($id = null) {
-
+    function view($id = null)
+    {
         $this->layout = 'public';
         $website_preferences = $this->Preference->find('first');
         $this->set('title_for_layout', $website_preferences['Preference']['website_name'] . ' : Ad');
 
         $id = Sanitize::escape($id);
-
         $this->set('splash_images_base_url', Configure::read('splash_images_base_url'));
+        $parent_item = $this->AdCategory->find('first',
+            array(
+                'conditions' => array('AdCategory.id' => $id)
+            )
+        );
 
-        //$categories = $this->AdCategory->children(1);
-
-        $parent_item = $this->AdCategory->find('first', array('conditions' => array('AdCategory.id' => $id)));
-
-        $categories = $this->AdCategory->find('threaded', array( 'conditions' => array(
-                                                                        'AdCategory.lft >=' => $parent_item['AdCategory']['lft'],
-                                                                        'AdCategory.rght <=' => $parent_item['AdCategory']['rght'] ) ));
+        $categories = $this->AdCategory->find('threaded',
+            array(
+                'conditions' => array(
+                    'AdCategory.lft >=' => $parent_item['AdCategory']['lft'],
+                    'AdCategory.rght <=' => $parent_item['AdCategory']['rght']
+                )
+            )
+        );
 
         $this->set('categories', $categories);
-
    }
-
 }
-
 ?>
