@@ -33,6 +33,7 @@ Rename goes here...
     
         while (false !== ($file = readdir($handle))) {
 
+
             // skip some unnecessary files
             if ($file != '.' && $file != '..' && $file != '.DS_Store') {
 
@@ -41,8 +42,10 @@ Rename goes here...
 
                     // check for protected folders...
                     if (in_array($dir_root . $file, $protected_folders) || in_array($dir_root . $file . '/', $protected_folders)) {
+                        // be careful of special characters
+                        $file = urlencode($file);
 
-                        echo '<li id="' . str_replace('/', '__', $dir_root . $file) . '"><img src="' . $site_base_url . 'img/protected_folder_16.gif" /><a href="' . $this->params['url']['url'] . '?path=' . $file . '" class="directory">' . $file .'</a>';
+                        echo '<li id="' . str_replace('/', '__', $dir_root . $file) . '"><img src="' . $site_base_url . 'img/protected_folder_16.gif" /><a href="' . $this->params['url']['url'] . '?path=' . $file . '" class="directory">' . urldecode($file) .'</a>';
                         echo '<div class="throbber"></div>
                         <ul class="file_manager connectedSortable">
                             <li class="folder_place_holder"></li>
@@ -50,9 +53,11 @@ Rename goes here...
                         </li>';
 
                     } else {
-$safe_filename = str_replace(' ', '----', $file);
-//$safe_filename = $file;
-                        echo '<li id="' . str_replace('/', '__', $dir_root . $safe_filename) . '"><img src="' . $site_base_url . 'img/folder_16.gif" /><a href="' . $this->params['url']['url'] . '?path=' . $safe_filename . '" class="directory">' . $file .'</a>';
+
+                        // be careful of special characters
+                        $safe_filename = str_replace(' ', '----', $file);
+
+                        echo '<li id="' . str_replace('/', '__', $dir_root . $safe_filename) . '"><img src="' . $site_base_url . 'img/folder_16.gif" /><a href="' . $this->params['url']['url'] . '?path=' . $safe_filename . '" class="directory">' . urldecode($file) .'</a>';
                         echo '<div class="category_options"><a href="file_managers#rename" class="rename_item">Rename</a> | <a href="' . $site_base_url . 'file_managers/delete_item/' . str_replace('/', '__', $dir_root . $file) . '" class="delete_item">Delete</a></div>';
                         echo '<div class="throbber"></div>
                         <ul class="file_manager connectedSortable">
@@ -63,8 +68,10 @@ $safe_filename = str_replace(' ', '----', $file);
                     }
 
                 } else {
+                    // be careful of special characters
+                    $file = urlencode($file);
 
-                    echo '<li id="' . str_replace('/', '__', $dir_root . $file) . '"><img src="' . $site_base_url . 'img/file_16.gif" />' . $file;
+                    echo '<li id="' . str_replace('/', '__', $dir_root . $file) . '"><img src="' . $site_base_url . 'img/file_16.gif" />' . urldecode($file);
                     echo '<div class="category_options"><a href="file_managers#rename" class="file_details">Details</a> | <a href="file_managers#rename" class="rename_item">Rename</a> | <a href="' . $site_base_url . 'file_managers/delete_item/' . str_replace('/', '__', $dir_root . $file) . '" class="delete_item">Delete</a></div>';
                     echo '</li>';
 

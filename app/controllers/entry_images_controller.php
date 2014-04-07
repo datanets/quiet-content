@@ -1,16 +1,13 @@
 <?php
+class EntryImagesController extends AppController
+{
+    var $name = 'EntryImages';
+    var $scaffold;
 
-class EntryImagesController extends AppController {
-
-	var $name = 'EntryImages';
-	var $scaffold;
-
-
-    function beforeFilter() {
+    function beforeFilter()
+    {
         $this->disableCache();
         parent::beforeFilter();
     }
-
 }
-
 ?>

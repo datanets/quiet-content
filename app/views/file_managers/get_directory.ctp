@@ -1,20 +1,25 @@
 <?php
+    // get_directory() is called when loading directories...
 
     $filename = str_replace('__', '/', $_GET['path']);
     $filename = str_replace('----', ' ', $filename);
     $filename_path = explode('/', $filename);
 
+    // be careful of special characters
+    $file = urlencode($_GET['path']);
+    $filename = urlencode($filename);
+
     // check for protected folders...
     if (in_array($filename, $protected_folders) || in_array($filename . '/', $protected_folders)) {
 
 ?>
-<img src="<?php echo $site_base_url ?>img/protected_folder_16.gif" /><a href="<?php echo str_replace('/get_directory', '', $this->params['url']['url']) ?>?path=<?php echo $_GET['path'] ?>" class="directory_open"><?php echo end($filename_path); ?></a>
+<img src="<?php echo $site_base_url ?>img/protected_folder_16.gif" /><a href="<?php echo str_replace('/get_directory', '', $this->params['url']['url']) ?>?path=<?php echo $file ?>" class="directory_open"><?php echo end($filename_path); ?></a>
 <?php
 
     } else {
 
 ?>
-<img src="<?php echo $site_base_url ?>img/folder_16.gif" /><a href="<?php echo str_replace('/get_directory', '', $this->params['url']['url']) ?>?path=<?php echo $_GET['path'] ?>" class="directory_open"><?php echo end($filename_path); ?></a>
+<img src="<?php echo $site_base_url ?>img/folder_16.gif" /><a href="<?php echo str_replace('/get_directory', '', $this->params['url']['url']) ?>?path=<?php echo $_T['path'] ?>" class="directory_open"><?php echo end($filename_path); ?></a>
 <div class="category_options"><a href="file_managers#rename" class="rename_item">Rename</a> | <a href="<?php echo $site_base_url ?>file_managers/delete_item/<?php echo str_replace('/', '__', $dir_root . end($filename_path)) ?>" class="delete_item">Delete</a></div>
 <?php
     }
@@ -53,6 +58,9 @@
                     // check for protected folders...
                     if (in_array($converted_path . '/' . $file, $protected_folders) || in_array($converted_path . '/' . $file . '/', $protected_folders)) {
 
+                        // be careful of special characters
+                        $regular_path_converted = urlencode($regular_path_converted);
+
                         echo '<li id="' . $regular_path_converted . '"><img src="' . $site_base_url . 'img/folder_16.gif" /><a href="' . $this->params['url']['url'] . '?path=' . $regular_path_converted . '" class="directory">' . $file . '</a>';
                         echo '<div class="throbber"></div>
                         <ul class="file_manager connectedSortable">
@@ -74,6 +82,9 @@
                     }
 
                 } else {
+
+                    // be careful of special characters
+                    $regular_path_converted = urlencode($regular_path_converted);
 
                     echo '<li id="' . $regular_path_converted . '"><img src="' . $site_base_url . 'img/file_16.gif" />' . $file;
                     echo '<div class="category_options"><a href="file_managers#rename" class="file_details">Details</a> | <a href="file_managers#rename" class="rename_item">Rename</a> | <a href="' . $site_base_url . 'file_managers/delete_item/' . $full_converted_path . '" class="delete_item">Delete</a></div>';
