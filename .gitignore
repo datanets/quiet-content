@@ -23,6 +23,7 @@ app/webroot/img/cake*
 app/webroot/js/*
 !app/webroot/js/main.js
 !app/webroot/js/public_main.js
+!app/webroot/js/admin_main.js
 cake/*
 junk/*
 vendors/*
