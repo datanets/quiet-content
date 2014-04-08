@@ -1,7 +1,6 @@
 <?php
-
-class HomeController extends AppController {
-
+class HomeController extends AppController
+{
     var $name = 'Home';
     var $layout = 'public';
     var $uses = array('Announcement', 'Entry', 'Home', 'News', 'Preference');
@@ -10,14 +9,14 @@ class HomeController extends AppController {
         'welcome' => '1 day'
     );
 
-
-    function beforeFilter() {
+    function beforeFilter()
+    {
         $this->disableCache();
         parent::beforeFilter();
     }
 
-    function welcome() {
-
+    function welcome()
+    {
         // check for mobile devices
         if ($this->RequestHandler->isMobile() && $_GET['full'] != 'true') {
             $this->redirect('/mobile/m_welcome');
@@ -68,19 +67,15 @@ class HomeController extends AppController {
         array_multisort($modified, SORT_DESC, $combined_features);
 
         $this->set('featured_entries', $combined_features);
-
     }
 
-    function indoors() {
-
+    function indoors()
+    {
         $this->layout = 'admin';
 
         $this->set('recent_announcements', $this->Announcement->list_recent_announcements(10));
         $this->set('recent_news', $this->News->list_recent_news(10));
         $this->set('recent_entries', $this->Entry->list_recent_entries(10));
-
     }
-
 }
-
 ?>

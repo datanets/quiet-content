@@ -1,16 +1,13 @@
 <?php
+class HelpsController extends AppController
+{
+    var $name = 'Helps';
+    var $scaffold;
 
-class HelpsController extends AppController {
-
-	var $name = 'Helps';
-	var $scaffold;
-
-
-    function beforeFilter() {
+    function beforeFilter()
+    {
         $this->disableCache();
         parent::beforeFilter();
     }
-
 }
-
 ?>
