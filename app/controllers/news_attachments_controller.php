@@ -1,16 +1,13 @@
 <?php
+class EntryAttachmentsController extends AppController
+{
+    var $name = 'EntryAttachments';
+    var $scaffold;
 
-class EntryAttachmentsController extends AppController {
-
-	var $name = 'EntryAttachments';
-	var $scaffold;
-
-
-    function beforeFilter() {
+    function beforeFilter()
+    {
         $this->disableCache();
         parent::beforeFilter();
     }
-
 }
-
 ?>
