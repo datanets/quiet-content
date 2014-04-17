@@ -1,16 +1,13 @@
 <?php
+class ThemesController extends AppController
+{
+    var $name = 'Themes';
+    var $scaffold;
 
-class ThemesController extends AppController {
-
-	var $name = 'Themes';
-	var $scaffold;
-
-
-    function beforeFilter() {
+    function beforeFilter()
+    {
         $this->disableCache();
         parent::beforeFilter();
     }
-
 }
-
 ?>

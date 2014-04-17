@@ -1,16 +1,13 @@
 <?php
+class StatusesController extends AppController
+{
+    var $name = 'Statuses';
+    var $scaffold;
 
-class StatusesController extends AppController {
-
-	var $name = 'Statuses';
-	var $scaffold;
-
-
-    function beforeFilter() {
+    function beforeFilter()
+    {
         $this->disableCache();
         parent::beforeFilter();
     }
-
 }
-
 ?>

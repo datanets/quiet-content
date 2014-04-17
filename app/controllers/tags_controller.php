@@ -1,16 +1,13 @@
 <?php
+class TagsController extends AppController
+{
+    var $name = 'Tags';
+    var $scaffold;
 
-class TagsController extends AppController {
-
-	var $name = 'Tags';
-	var $scaffold;
-
-
-    function beforeFilter() {
+    function beforeFilter()
+    {
         $this->disableCache();
         parent::beforeFilter();
     }
-
 }
-
 ?>
