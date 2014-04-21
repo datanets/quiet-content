@@ -1,7 +1,6 @@
 <?php
-
-class TweetsController extends AppController {
-
+class TweetsController extends AppController
+{
     var $name = 'Tweets';
     var $layout = 'ajax';
 
@@ -33,7 +32,5 @@ class TweetsController extends AppController {
 
         $this->set('data', $data);
     }
-
 }
-
 ?>
