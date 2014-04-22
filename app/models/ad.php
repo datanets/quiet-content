@@ -1,21 +1,25 @@
 <?php
-
-class Ad extends AppModel {
-
+class Ad extends AppModel
+{
     var $name = 'Ad';
-
-    var $belongsTo = array( 'AdCategory',
-                            'User' => array('foreignKey' => 'id',
-                                            'fields' => array('id')));
-
-    var $hasOne = array('Status' => array( 'foreignKey' => 'id',
-                                            'type' => 'LEFT',
-                                            'fields' => ' ' ));
-
+    var $belongsTo = array(
+        'AdCategory',
+        'User' => array(
+            'foreignKey' => 'id',
+            'fields' => array('id')
+        )
+    );
+    var $hasOne = array(
+        'Status' => array(
+            'foreignKey' => 'id',
+            'type' => 'LEFT',
+            'fields' => ' '
+        )
+    );
     var $actsAs = array('Containable');
 
-
-    function afterSave() {
+    function afterSave()
+    {
         if (CACHE > '') {
             // sweep away old cache files
             $dir = CACHE.'views'.DS;        
@@ -28,7 +32,8 @@ class Ad extends AppModel {
         } 
     }
 
-    function afterDelete() {
+    function afterDelete()
+    {
         if (CACHE > '') {
             // sweep away old cache files
             $dir = CACHE.'views'.DS;        
@@ -41,30 +46,70 @@ class Ad extends AppModel {
         } 
     }
 
-    function list_recent_ads($limit, $ad_type = null) {
-        if ($ad_type)
-            return $this->find('all', array('conditions' => array('Ad.ad_type' => $ad_type, 'Ad.status_id' => '1'), 'order' => 'Ad.id DESC', 'limit' => $limit));
-        else
-            return $this->find('all', array('conditions' => array('Ad.status_id' => '1'), 'order' => 'Ad.id DESC', 'limit' => $limit));
+    function list_recent_ads($limit, $ad_type = null)
+    {
+        if ($ad_type) {
+            return $this->find('all',
+                array(
+                    'conditions' => array(
+                        'Ad.ad_type' => $ad_type,
+                        'Ad.status_id' => '1'
+                    ),
+                    'order' => 'Ad.id DESC',
+                    'limit' => $limit
+                )
+            );
+        } else {
+            return $this->find('all',
+                array(
+                    'conditions' => array('Ad.status_id' => '1'),
+                    'order' => 'Ad.id DESC',
+                    'limit' => $limit
+                )
+            );
+        }
     }
 
-    function list_featured_ads($limit, $ad_type = null) {
-        if ($ad_type)
-            return $this->find('all', array('conditions' => array('Ad.ad_type' => $ad_type, 'Ad.status_id' => '1'), 'order' => 'Ad.modified DESC', 'limit' => $limit));
-        else
-            return $this->find('all', array('conditions' => array('Ad.status_id' => '1'), 'order' => 'Ad.modified DESC', 'limit' => $limit));
+    function list_featured_ads($limit, $ad_type = null)
+    {
+        if ($ad_type) {
+            return $this->find('all',
+                array(
+                    'conditions' => array(
+                        'Ad.ad_type' => $ad_type,
+                        'Ad.status_id' => '1'
+                    ),
+                    'order' => 'Ad.modified DESC',
+                    'limit' => $limit
+                )
+            );
+        } else {
+            return $this->find('all',
+                array(
+                    'conditions' => array('Ad.status_id' => '1'),
+                    'order' => 'Ad.modified DESC',
+                    'limit' => $limit
+                )
+            );
+        }
     }
 
-    function list_recent_calendar_events($limit) {
-        return $this->find('all', array('conditions' => 'ad_type = 1', 'order' => 'Ad.id DESC', 'limit' => $limit));
+    function list_recent_calendar_events($limit)
+    {
+        return $this->find('all',
+            array(
+                'conditions' => 'ad_type = 1',
+                'order' => 'Ad.id DESC',
+                'limit' => $limit
+            )
+        );
     }
 
-    function resize_image($filename, $width, $height) {
-
+    function resize_image($filename, $width, $height)
+    {
         list ($width_orig, $height_orig, $file_type) = getimagesize($filename);
 
         if (($width_orig > $width) || ($height_orig > $height)) {
-
             if ($width && ($width_orig < $height_orig)) {
                 $width = ($height / $height_orig) * $width_orig;
             } else {
@@ -91,15 +136,20 @@ class Ad extends AppModel {
             imagedestroy($src_img);
 
             ob_end_clean();
-
         }
-
     }
 
-    function get_featured_ads() {
-        return $this->find('all', array('conditions' => array('Ad.status_id' => '1', 'Ad.featured_ad' => '1'), 'order' => 'Ad.modified DESC'));
+    function get_featured_ads()
+    {
+        return $this->find('all',
+            array(
+                'conditions' => array(
+                    'Ad.status_id' => '1',
+                    'Ad.featured_ad' => '1'
+                ),
+                'order' => 'Ad.modified DESC'
+            )
+        );
     }
-
 }
-
 ?>
