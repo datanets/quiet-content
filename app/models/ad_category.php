@@ -2,12 +2,14 @@
 class AdCategory extends AppModel
 {
     var $name = 'AdCategory';
-    var $hasMany = array('Ad' => array(
-        'foreignKey' => 'ad_category_id',
-        'type' => 'INNER',
-        'order' => 'Ad.subject',
-        'conditions' => array('Ad.status_id' => '1')
-    ));
+    var $hasMany = array(
+        'Ad' => array(
+            'foreignKey' => 'ad_category_id',
+            'type' => 'INNER',
+            'order' => 'Ad.subject',
+            'conditions' => array('Ad.status_id' => '1')
+        )
+    );
     var $actsAs = array('Containable', 'Tree');
 
     function list_all()
