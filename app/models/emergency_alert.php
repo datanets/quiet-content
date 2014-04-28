@@ -40,7 +40,8 @@ class EmergencyAlert extends AppModel
         return $this->find('all',
             array(
                 'conditions' => array(
-                    'featured_entry' => '1', 'status_id' => '1'
+                    'featured_entry' => '1',
+                    'status_id' => '1'
                 ),
                 'order' => 'EmergencyAlert.id DESC',
                 'limit' => $limit,
