@@ -1,9 +1,7 @@
 <?php
-
-class EntryCategoryType extends AppModel {
-
-	var $name = 'EntryCategoryType';
-
+class EntryCategoryType extends AppModel
+{
+    var $name = 'EntryCategoryType';
     var $belongsTo = array(
         'EntryCategory' => array(
             'className' => 'EntryCategory',
@@ -13,14 +11,11 @@ class EntryCategoryType extends AppModel {
             'order' => ''
         )
     );
-
     var $actsAs = array('Containable');
 
-
-    function list_all() {
+    function list_all()
+    {
         return $this->find('list', array('order' => 'id'));
     }
-
 }
-
 ?>
