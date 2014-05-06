@@ -1,20 +1,19 @@
 <?php
-
-class MiniMenu extends AppModel {
-
-	var $name = 'MiniMenu';
-
-    var $hasMany = array('MiniMenuItem' => array( 'foreignKey' => 'mini_menu_id',
-                                                  'type' => 'LEFT',
-                                                  'order' => 'MiniMenuItem.weight' )
-                                               );
-
+class MiniMenu extends AppModel
+{
+    var $name = 'MiniMenu';
+    var $hasMany = array(
+        'MiniMenuItem' => array(
+            'foreignKey' => 'mini_menu_id',
+            'type' => 'LEFT',
+            'order' => 'MiniMenuItem.weight'
+        )
+    );
     var $actsAs = array('Containable');
 
-
-    function afterSave() {
+    function afterSave()
+    {
         if (CACHE > '') {
-
             // sweep away old cache files because this is part of header
             $dir = CACHE.'views'.DS;
             if (!$dh = @opendir($dir)) return;
@@ -23,13 +22,12 @@ class MiniMenu extends AppModel {
                 unlink ($dir.DS.$file);
             }
             closedir($dh);
-
         }
     }
 
-    function afterDelete() {
+    function afterDelete()
+    {
         if (CACHE > '') {
-
             // sweep away old cache files because this is part of header
             $dir = CACHE.'views'.DS;
             if (!$dh = @opendir($dir)) return;
@@ -38,17 +36,17 @@ class MiniMenu extends AppModel {
                 unlink ($dir.DS.$file);
             }
             closedir($dh);
-
         }
     }
 
-    function list_all() {
+    function list_all()
+    {
         return $this->find('list', array('order' => 'id'));
     }
 
-    function list_all_mini_menus() {
+    function list_all_mini_menus()
+    {
         return $this->find('all', array('order' => 'modified'));
     }
 }
-
 ?>
