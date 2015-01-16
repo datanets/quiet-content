@@ -1,7 +1,10 @@
 <?php
+
 class Widget extends AppModel
 {
+
     var $name = 'Widget';
+
     var $belongsTo = array(
         'Preference' => array(
             'className' => 'Preference',
@@ -11,6 +14,9 @@ class Widget extends AppModel
             'order' => ''
         )
     );
-    var $actsAs = array('Containable');
+
+    var $actsAs = array(
+        'Containable'
+    );
 }
 ?>

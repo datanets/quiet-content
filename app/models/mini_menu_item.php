@@ -1,7 +1,10 @@
 <?php
+
 class MiniMenuItem extends AppModel
 {
+
     var $name = 'MiniMenuItem';
+
     var $belongsTo = array(
         'MiniMenu' => array(
             'className' => 'MiniMenu',
@@ -11,6 +14,9 @@ class MiniMenuItem extends AppModel
             'order' => ''
         )
     );
-    var $actsAs = array('Containable');
+
+    var $actsAs = array(
+        'Containable'
+    );
 }
 ?>

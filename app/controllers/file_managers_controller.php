@@ -3,9 +3,15 @@ App::import('Sanitize');
 
 class FileManagersController extends AppController
 {
+
     var $name = 'FileManagers';
+
     var $layout = 'admin';
-    var $uses = array('FileManager', 'User');
+
+    var $uses = array(
+        'FileManager',
+        'User'
+    );
 
     function beforeFilter()
     {
@@ -17,18 +23,18 @@ class FileManagersController extends AppController
     {
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] <= 2) {
             $dir_root = Configure::read('site_uploads_base_dir');
             $protected_folders = Configure::read('protected_folders');
             $user = $this->Session->read('Auth.User');
             $users_base_dir = Configure::read('users_base_dir');
             $protected_folders[count($protected_folders)] = $users_base_dir . $user['username'] . '/';
-
+            
             $this->set('title_for_layout', 'File Manager');
             $this->set('dir_root', $dir_root);
             $this->set('protected_folders', Configure::read('protected_folders'));
-
+            
             if (isset($_GET['path'])) {
                 $path = $_GET['path'];
                 $this->set('path', $path);
@@ -45,29 +51,34 @@ class FileManagersController extends AppController
     function get_directory()
     {
         $this->layout = 'ajax';
-
+        
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] <= 2) {
             // This section makes sure we add the current user to the protected folders list
             // and also makes sure we can't view/rename/delete another users' files.
-
+            
             $dir_root = Configure::read('site_uploads_base_dir');
             $protected_folders = Configure::read('protected_folders');
             $user = $this->Session->read('Auth.User');
             $users_base_dir = Configure::read('users_base_dir');
             $protected_folders[count($protected_folders)] = $users_base_dir . $user['username'] . '/';
-            $all_users = $this->User->find('all', array('fields' => array('id', 'username')));
+            $all_users = $this->User->find('all', array(
+                'fields' => array(
+                    'id',
+                    'username'
+                )
+            ));
             $all_users_dirs = array();
             $path = $_GET['path'];
             $path = str_replace('----', ' ', $path);
             
-            for($i=0; $i<count($all_users); $i++) {
+            for ($i = 0; $i < count($all_users); $i ++) {
                 if ($all_users[$i]['User']['username'] != $user['username'])
                     $all_users_dirs[$i] = $users_base_dir . $all_users[$i]['User']['username'];
             }
-
+            
             $this->set('dir_root', $dir_root);
             $this->set('protected_folders', $protected_folders);
             $this->set('users_base_dir', $users_base_dir);
@@ -82,46 +93,51 @@ class FileManagersController extends AppController
     function move_item($source, $destination)
     {
         $this->autoRender = false;
-
+        
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] <= 2) {
             $dir_root = Configure::read('site_uploads_base_dir');
             $source = $_GET['source'];
             $destination = $_GET['destination'];
-
-            if (!$destination || $destination == "_BASEDIR_")
+            
+            if (! $destination || $destination == "_BASEDIR_")
                 $destination = $dir_root;
-
-            // replace __ with /
+                
+                // replace __ with /
             $source = preg_replace("/\_\_/", "/", $source);
             $source = preg_replace("/\-\-\-\-/", " ", $source); // for spaces in folder/file name
-            //$source = preg_replace("/\&/", "and", $source); // for ampersands
+                                                                // $source = preg_replace("/\&/", "and", $source); // for ampersands
             $destination = preg_replace("/\_\_/", "/", $destination);
-            $destination = preg_replace("/\-\-\-\-/", " ", $destination);   // for spaces in folder/file name
-            //$destination = preg_replace("/\&/", "and", $destination); // for ampersands
-
+            $destination = preg_replace("/\-\-\-\-/", " ", $destination); // for spaces in folder/file name
+                                                                          // $destination = preg_replace("/\&/", "and", $destination); // for ampersands
+                                                                          
             // This section makes sure we add the current user to the protected folders list
-            // and also makes sure we can't view/rename/delete another users' files.
+                                                                          // and also makes sure we can't view/rename/delete another users' files.
             $protected_folders = Configure::read('protected_folders');
             $user = $this->Session->read('Auth.User');
             $users_base_dir = Configure::read('users_base_dir');
-            $all_users = $this->User->find('all', array('fields' => array('id', 'username')));
+            $all_users = $this->User->find('all', array(
+                'fields' => array(
+                    'id',
+                    'username'
+                )
+            ));
             $all_users_dirs = array();
-
-            for($i=0; $i<count($all_users); $i++) {
+            
+            for ($i = 0; $i < count($all_users); $i ++) {
                 if ($all_users[$i]['User']['username'] != $user['username'])
                     $all_users_dirs[$i] = $users_base_dir . $all_users[$i]['User']['username'];
             }
-
+            
             if (in_array($source, $protected_folders) || in_array($source . '/', $protected_folders)) {
                 // do nothing (you are not allowed...)
             } else {
                 // get actual file name we are moving
                 $source_array = explode('/', $source);
                 $destination = $destination . '/' . end($source_array);
-
+                
                 if ($source && $destination) {
                     rename($source, $destination);
                 }
@@ -135,10 +151,10 @@ class FileManagersController extends AppController
     function rename_item()
     {
         $this->autoRender = false;
-
+        
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] <= 2) {
             $source_path = Sanitize::escape($_GET['source_path']);
             $destination_path = Sanitize::escape($_GET['destination_path']);
@@ -146,7 +162,7 @@ class FileManagersController extends AppController
             $source_path = preg_replace("/\-\-\-\-/", " ", $source_path); // for spaces in folder/file name
             $destination_path = str_replace('__', '/', $destination_path);
             $destination_path = preg_replace("/\-\-\-\-/", " ", $destination_path); // for spaces in folder/file name
-
+            
             if ($source_path && $destination_path) {
                 rename($source_path, $destination_path);
             }
@@ -159,25 +175,25 @@ class FileManagersController extends AppController
     function delete_item()
     {
         $this->autoRender = false;
-
+        
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] <= 2) {
             $delete_this = $_GET['item'];
             $delete_this = str_replace('__', '/', $delete_this);
             $delete_this = preg_replace("/\-\-\-\-/", " ", $delete_this); // for spaces in folder/file name
             $base_upload_dir = Configure::read('site_uploads_base_dir');
-
+            
             // double-check we are at least in uploads base dir... (no bad dreams... no bad dreams...)
             str_replace($base_upload_dir, $base_upload_dir, $delete_this, $test_base_dir);
-
+            
             // delete item
             if ($delete_this > '' && count($test_base_dir) > 0) {
                 if (is_dir($delete_this))
-                    rmdir ($delete_this);
+                    rmdir($delete_this);
                 else
-                    unlink ($delete_this);
+                    unlink($delete_this);
             }
         } else {
             $this->Session->setFlash('Sorry, permission denied.');
@@ -188,25 +204,24 @@ class FileManagersController extends AppController
     function new_folder()
     {
         $this->autoRender = false;
-
+        
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] <= 2) {
             $base_upload_dir = Configure::read('site_uploads_base_dir');
             $new_folder_name = 'Untitled Folder';
-
+            
             // Check for existing Untitled Folder folders first...
             if (is_dir($base_upload_dir . '/' . $new_folder_name)) {
-                for ($i = 1; $i < 26; $i++) {
-                    if (is_dir($base_upload_dir . '/' . $new_folder_name . ' ' . $i)) {
-                    } else {
+                for ($i = 1; $i < 26; $i ++) {
+                    if (is_dir($base_upload_dir . '/' . $new_folder_name . ' ' . $i)) {} else {
                         $new_folder_name = $new_folder_name . ' ' . $i;
                         break;
                     }
                 }
             }
-
+            
             mkdir($base_upload_dir . '/' . $new_folder_name, 0777);
             chmod($base_upload_dir . '/' . $new_folder_name, 0777);
         } else {
@@ -219,19 +234,19 @@ class FileManagersController extends AppController
     {
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] <= 2) {
             $base_upload_dir = Configure::read('site_uploads_base_dir');
             $messages = '';
-
+            
             if (isset($_FILES) && count($_FILES) > 0) {
                 foreach ($_FILES as $k => $v) :
-                    if ( isset($v['tmp_name']) ) {
-                        if ( isset($v['name']) && $v['name'] > '') {
+                    if (isset($v['tmp_name'])) {
+                        if (isset($v['name']) && $v['name'] > '') {
                             // clean filename
                             $clean_filename = $v['name'];
                             $clean_filename = preg_replace("/[^0-9A-Za-z\.\+\_]+/", "-", $clean_filename);
-
+                            
                             if (move_uploaded_file($v['tmp_name'], $base_upload_dir . $clean_filename)) {
                                 chmod($base_upload_dir . $clean_filename, 0777);
                                 $messages .= 'File successfully uploaded.';
@@ -242,11 +257,14 @@ class FileManagersController extends AppController
                     } else {
                         $messages .= 'Sorry, the file could not be uploaded.';
                     }
-                endforeach;
+                endforeach
+                ;
             }
-
+            
             $this->Session->setFlash($messages);
-            $this->redirect(array('action' => 'index'));
+            $this->redirect(array(
+                'action' => 'index'
+            ));
         } else {
             $this->Session->setFlash('Sorry, permission denied.');
             $this->redirect('/home/indoors');

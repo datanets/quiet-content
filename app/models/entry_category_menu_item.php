@@ -1,7 +1,10 @@
 <?php
+
 class EntryCategoryMenuItem extends AppModel
 {
+
     var $name = 'EntryCategoryMenuItem';
+
     var $belongsTo = array(
         'EntryCategory' => array(
             'className' => 'EntryCategoryMenu',
@@ -11,6 +14,9 @@ class EntryCategoryMenuItem extends AppModel
             'order' => ''
         )
     );
-    var $actsAs = array('Containable');
+
+    var $actsAs = array(
+        'Containable'
+    );
 }
 ?>

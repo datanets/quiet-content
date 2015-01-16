@@ -1,7 +1,10 @@
 <?php
+
 class PreferencesController extends AppController
 {
+
     var $name = 'Preferences';
+
     var $layout = 'admin';
 
     function beforeFilter()
@@ -12,19 +15,19 @@ class PreferencesController extends AppController
 
     function list_all()
     {
-        return $this->Preference->find('list',
-            array(
-                'fields' => array('Preference.name'),
-                'cache' => 'preferenceList'
-            )
-        );
+        return $this->Preference->find('list', array(
+            'fields' => array(
+                'Preference.name'
+            ),
+            'cache' => 'preferenceList'
+        ));
     }
 
     function index()
     {
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] <= 3) {
             $this->set('title_for_layout', 'Preferences');
         } else {
@@ -37,7 +40,7 @@ class PreferencesController extends AppController
     {
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] == 1) {
             $this->set('title_for_layout', 'Preferences : New');
         } else {
@@ -47,22 +50,21 @@ class PreferencesController extends AppController
     }
 
     function edit()
-    {
-    }
+    {}
 
     function remove()
     {
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] == 1) {
             $this->autorender = false;
             $warnings = '';
-
+            
             foreach ($this->data['Preference'] as $key => $value) {
                 if ($value == 1) {
                     $delete_this = preg_replace("/Preference|delete/", "", $key);
-
+                    
                     if ($this->Preference->delete($delete_this, false)) {
                         // clean cache for lists
                         Cache::delete('Preference-preferenceList');
@@ -73,13 +75,15 @@ class PreferencesController extends AppController
                     // do not delete
                 }
             }
-
+            
             if ($warnings != '')
                 $this->Session->setFlash($warnings);
             else
                 $this->Session->setflash('Selected preferences deleted.');
-
-            $this->redirect(array('action' => 'index'));
+            
+            $this->redirect(array(
+                'action' => 'index'
+            ));
         } else {
             $this->Session->setFlash('Sorry, permission denied.');
             $this->redirect('/home/indoors');
@@ -90,17 +94,17 @@ class PreferencesController extends AppController
     {
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] == 1) {
             $this->set('title_for_layout', 'Preferences : Website');
-
+            
             if (empty($this->data)) {
                 $this->set('preferences', $this->Preference->find('first'));
-
+                
                 // get current website theme!
                 $dir_root = Configure::read('website_theme_dir');
                 $themes_array = array();
-
+                
                 if ($handle = opendir($dir_root)) {
                     while (false !== ($file = readdir($handle))) {
                         // skip some unnecessary files
@@ -110,15 +114,21 @@ class PreferencesController extends AppController
                         }
                     }
                 }
-
-                $this->set('website_themes', array($themes_array));
+                
+                $this->set('website_themes', array(
+                    $themes_array
+                ));
             } else {
                 if ($this->Preference->saveAll($this->data)) {
                     $this->Session->setFlash('Your preferences have been saved.');
-                    $this->redirect(array('action' => 'index'));
+                    $this->redirect(array(
+                        'action' => 'index'
+                    ));
                 } else {
                     $this->Session->setFlash('Sorry, there was a problem saving preferences.');
-                    $this->redirect(array('action' => 'website'));
+                    $this->redirect(array(
+                        'action' => 'website'
+                    ));
                 }
             }
         } else {
@@ -131,7 +141,7 @@ class PreferencesController extends AppController
     {
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] == 1) {
             $this->set('title_for_layout', 'Preferences : Website');
             $this->set('preferences', $this->Preference->find('first'));
@@ -140,26 +150,28 @@ class PreferencesController extends AppController
             $this->redirect('/home/indoors');
         }
     }
-
+    
     // clear website cache folder
     function clear_cache()
     {
         $this->autoRender = false;
-
+        
         // Check Permissions
         $user = $this->Session->read('Auth.User');
-
+        
         if ($user['usertype'] <= 2) {
             if (CACHE > '') {
                 // sweep away old cache files because this is part of header
-                $dir = CACHE.'views'.DS;
-                if (!$dh = @opendir($dir)) return;
+                $dir = CACHE . 'views' . DS;
+                if (! $dh = @opendir($dir))
+                    return;
                 while (false !== ($file = readdir($dh))) {
-                    if ($file == '.' || $file == '..' || $file == 'empty') continue;
-                    unlink ($dir.DS.$file);
+                    if ($file == '.' || $file == '..' || $file == 'empty')
+                        continue;
+                    unlink($dir . DS . $file);
                 }
                 closedir($dh);
-
+                
                 $this->Session->setFlash('Website cache has been cleared.');
                 $this->redirect('/preferences');
             }

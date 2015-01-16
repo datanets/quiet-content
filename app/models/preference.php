@@ -1,7 +1,10 @@
 <?php
+
 class Preference extends AppModel
 {
+
     var $name = 'Preference';
+
     var $hasMany = array(
         'Widget' => array(
             'foreignKey' => 'preference_id',
@@ -14,11 +17,13 @@ class Preference extends AppModel
     {
         if (CACHE > '') {
             // sweep away old cache files because this is part of header
-            $dir = CACHE.'views'.DS;
-            if (!$dh = @opendir($dir)) return;
+            $dir = CACHE . 'views' . DS;
+            if (! $dh = @opendir($dir))
+                return;
             while (false !== ($file = readdir($dh))) {
-                if ($file == '.' || $file == '..' || $file == 'empty') continue;
-                unlink ($dir.DS.$file);
+                if ($file == '.' || $file == '..' || $file == 'empty')
+                    continue;
+                unlink($dir . DS . $file);
             }
             closedir($dh);
         }
@@ -28,11 +33,13 @@ class Preference extends AppModel
     {
         if (CACHE > '') {
             // sweep away old cache files because this is part of header
-            $dir = CACHE.'views'.DS;
-            if (!$dh = @opendir($dir)) return;
+            $dir = CACHE . 'views' . DS;
+            if (! $dh = @opendir($dir))
+                return;
             while (false !== ($file = readdir($dh))) {
-                if ($file == '.' || $file == '..' || $file == 'empty') continue;
-                unlink ($dir.DS.$file);
+                if ($file == '.' || $file == '..' || $file == 'empty')
+                    continue;
+                unlink($dir . DS . $file);
             }
             closedir($dh);
         }
